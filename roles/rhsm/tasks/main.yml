@@ -1,0 +1,38 @@
+---
+- name: Registering system with Red Hat
+  tags:
+    - create
+  block:
+
+    - name: Register and subscribe the system
+      community.general.redhat_subscription:
+        username: "{{ customer_portal_username }}"
+        password: "{{ customer_portal_password }}"
+        state: present
+        consumer_name: "{{ inventory_hostname }}"
+        pool_ids:
+          - '{{ rhsm_pool_id }}'
+
+    - name: Register with Red Hat Insights
+      register: result
+      changed_when: result.rc == 1
+      failed_when: result.rc > 1
+      ansible.builtin.command: insights-client --register
+
+- name: Un-Registering system with Red Hat
+  tags:
+    - remove
+  block:
+
+    - name: UN-Register and subscribe the system
+      community.general.redhat_subscription:
+        username: "{{ customer_portal_username }}"
+        password: "{{ customer_portal_password }}"
+        state: absent
+        consumer_name: "{{ inventory_hostname }}"
+
+    - name: UN-Register Red Hat Insights
+      register: result
+      changed_when: result.rc == 1
+      failed_when: result.rc > 1
+      ansible.builtin.command: insights-client --unregister

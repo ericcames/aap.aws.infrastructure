@@ -1,0 +1,67 @@
+- name: Build the ansible infrastructure
+  hosts: localhost
+  connection: local
+
+  tasks:
+
+    - name: Include the vpc role
+      tags:
+        - create
+      ansible.builtin.include_role:
+        name: vpc
+
+    - name: Include the vm role
+      tags:
+        - create
+      ansible.builtin.include_role:
+        name: vm
+
+    - name: Include the inventory role
+      tags:
+        - create
+      ansible.builtin.include_role:
+        name: inventory
+
+    - name: Satellite User Interface
+      tags:
+        - create
+      ansible.builtin.debug:
+        msg: "https://{{ ec2_vms.instances[0].public_dns_name }}"
+
+    - name: Satellite IP Address
+      tags:
+        - create
+      ansible.builtin.debug:
+        msg: "{{ ec2_vms.instances[0].public_ip_address }}"
+
+    - name: Set a fact for our ip address
+      tags:
+        - create
+      ansible.builtin.set_fact:
+        my_private_ip: "{{ ec2_vms.instances[0].private_ip_address }}"
+
+- name: Do work on our new server
+  hosts: aap
+  become: true
+  become_user: root
+  gather_facts: true
+
+  tasks:
+
+    - name: Create local accounts
+      tags:
+        - create
+      ansible.builtin.include_role:
+        name: account_create
+
+    - name: Red Hat Subscription Manager
+      tags:
+        - create
+      ansible.builtin.include_role:
+        name: rhsm
+
+    - name: Post install
+      tags:
+        - create
+      ansible.builtin.include_role:
+        name: linux_post_install
