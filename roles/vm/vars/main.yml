@@ -3,7 +3,7 @@ vm_name: Ansible Automation Platform
 vm_vpc_name: aap_containerized_deployment
 vm_user_name: eric.ames
 vm_subnet_name: "{{ vm_vpc_name }}_Subnet"
-vm_image: ami-0b7bc899570b58d58
+vm_image: ami-014b1abc6a95b72fa
 vm_count: 1
 vm_region: us-west-1
 vm_assign_public_ip: true
