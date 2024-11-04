@@ -22,13 +22,13 @@
       ansible.builtin.include_role:
         name: inventory
 
-    - name: Satellite User Interface
+    - name: User Interface
       tags:
         - create
       ansible.builtin.debug:
         msg: "https://{{ ec2_vms.instances[0].public_dns_name }}"
 
-    - name: Satellite IP Address
+    - name: IP Address
       tags:
         - create
       ansible.builtin.debug:
