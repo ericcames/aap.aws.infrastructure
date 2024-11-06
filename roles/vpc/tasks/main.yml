@@ -76,6 +76,10 @@
             cidr_ip: "0.0.0.0/0"
             rule_desc: allow all on port 8445 eda controller
           - proto: tcp
+            ports: 8446
+            cidr_ip: "0.0.0.0/0"
+            rule_desc: allow all on port 8446 gateway
+          - proto: tcp
             ports: 5432
             cidr_ip: "0.0.0.0/0"
             rule_desc: allow all on port 5432 Postgres
